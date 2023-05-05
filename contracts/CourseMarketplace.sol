@@ -15,7 +15,7 @@ contract CourseMarketplace {
         address owner; //20
         State state; //1
     }
-
+    mapping(address => uint256) private points;
     mapping(bytes32 => Course) private ownedCourses;
     mapping(uint => bytes32) private ownedCourseHash;
 
@@ -62,6 +62,16 @@ contract CourseMarketplace {
             owner: msg.sender,
             state: State.Purchased
         });
+    }
+
+    function setPoints(address hash, uint256 p) external {
+        uint256 point = points[hash] + p;
+        points[hash] = point;
+    }
+
+    function getPoints(address hash) external view returns (uint256) {
+        uint256 point = points[hash];
+        return point;
     }
 
     function transferOwnership(address newOwner) external onlyOwner {

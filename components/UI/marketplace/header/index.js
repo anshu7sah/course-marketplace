@@ -18,7 +18,7 @@ const LINKS = [
 
 export default function Header() {
   return (
-    <>
+    <div className="bg-white">
       <div className="pt-4">
         <WalletBar />
       </div>
@@ -28,6 +28,6 @@ export default function Header() {
       <div className="flex flex-row-reverse p-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={LINKS} />
       </div>
-    </>
+    </div>
   );
 }

@@ -16,6 +16,7 @@
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-player": "^2.12.0",
     "react-simple-animate": "^3.5.2",
     "swr": "^2.1.5",
     "web3": "^1.9.0"

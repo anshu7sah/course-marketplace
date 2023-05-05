@@ -22,7 +22,7 @@ const createFormState = (
     return _createFormState(true, "Price is not valid.");
   }
 
-  if (isNewPurchase) {
+  if (isNewPurchase != "danger") {
     if (confirmationEmail.length === 0 || email.length === 0) {
       return _createFormState(true);
     } else if (email !== confirmationEmail) {
@@ -127,7 +127,7 @@ export default function OrderModal({
                   allowed)
                 </p>
               </div>
-              {isNewPurchase && (
+              {isNewPurchase != "danger" && (
                 <>
                   <div className="mt-2 relative rounded-md">
                     <div className="mb-1">

@@ -1,11 +1,40 @@
 import Link from "next/link";
-import { Loader } from "../../common";
-export default function Curriculum({ locked, courseState, isLoading }) {
+import { Button, Loader } from "../../common";
+import { useAccount } from "@/components/hooks/web3";
+import { useWeb3 } from "@/components/providers";
+import { useState } from "react";
+export default function Curriculum({
+  locked,
+  courseState,
+  isLoading,
+  onChange,
+}) {
   const statusClass =
     "px-2 inline-flex text-xs leading-5 font-semibold rounded-full";
   const lectures = ["Frontend Completed"];
+  const { account } = useAccount();
+  const { web3, contract } = useWeb3();
+  const [point, setPoint] = useState(0);
+  const checkboxChangeHandler = async (e) => {
+    if (e.target.checked) {
+      try {
+        if (
+          await contract.methods
+            .setPoints(account.data, 200)
+            .send({ from: account.data })
+        ) {
+          let p = await contract.methods.getPoints(account.data).call();
+          setPoint(p);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   return (
     <section className="max-w-5xl mx-auto">
+      <Button>Points: {point}</Button>
+
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -45,18 +74,18 @@ export default function Curriculum({ locked, courseState, isLoading }) {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={
-                            locked != "purchased"
+                            !locked
                               ? `bg-red-100 text-red-800 ${statusClass}`
                               : `bg-green-100 text-green-800 ${statusClass}`
                           }
                         >
-                          {locked != "purchased" ? "Locked" : "Unlocked"}
+                          {!locked ? "Locked" : "Unlocked"}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         {isLoading ? (
                           <Loader />
-                        ) : locked != "purchased" ? (
+                        ) : !locked ? (
                           <>
                             {courseState === "deactivated" && (
                               <Link
@@ -76,12 +105,19 @@ export default function Curriculum({ locked, courseState, isLoading }) {
                             )}
                           </>
                         ) : (
-                          <Link
-                            href="/watch"
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            Watch
-                          </Link>
+                          <>
+                            <input
+                              type="checkbox"
+                              onChange={checkboxChangeHandler}
+                              style={{}}
+                            />
+                            <Button
+                              className="text-indigo-600 hover:text-indigo-900"
+                              onClick={onChange}
+                            >
+                              Watch
+                            </Button>
+                          </>
                         )}
                       </td>
                     </tr>

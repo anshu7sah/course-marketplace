@@ -3,7 +3,9 @@ import { CourseHero, Curriculum, Keypoints } from "@/components/UI/course";
 import { BaseLayout } from "@/components/UI/layout";
 import { useAccount, useOwnedCourse } from "@/components/hooks/web3";
 import { useWeb3 } from "@/components/providers";
+import VideoPlayer from "@/components/watch/VideoPlayer";
 import { getAllCourses } from "@/content/courses/fetcher";
+import { useState } from "react";
 
 export default function Course({ course }) {
   const { account } = useAccount();
@@ -11,6 +13,11 @@ export default function Course({ course }) {
   const { ownedCourse } = useOwnedCourse(course, account.data);
   const courseState = ownedCourse.data?.state;
   const isLocked = !courseState || "purchased" || courseState === "deactivated";
+  const [player, setPlayer] = useState(false);
+  const playerChange = () => {
+    console.log(player);
+    setPlayer((p) => !p);
+  };
   return (
     <BaseLayout>
       <div className="py-6">
@@ -19,6 +26,7 @@ export default function Course({ course }) {
           title={course.title}
           description={course.description}
           image={course.coverImage}
+          onChange={playerChange}
         />
       </div>
       <Keypoints points={course.wsl} />
@@ -53,8 +61,12 @@ export default function Course({ course }) {
         isLoading={isLoading}
         locked={isLocked}
         courseState={courseState}
+        onChange={playerChange}
       />
       <Modal />
+      <div style={{ display: `${player ? "block" : "none"}` }}>
+        <VideoPlayer onChange={playerChange} />
+      </div>
     </BaseLayout>
   );
 }

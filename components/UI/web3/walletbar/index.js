@@ -5,7 +5,7 @@ export default function WalletBar() {
   const { requireInstall } = useWeb3();
   const { account, network } = useWalletInfo();
   return (
-    <section className="text-white bg-indigo-600">
+    <section className="text-white bg-gray-700">
       <section className="text-white bg-indigo-600 rounded-lg"></section>
       <div className="p-8">
         <h1 className="text-base sm:text-xl break-words">

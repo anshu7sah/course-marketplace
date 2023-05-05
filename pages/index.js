@@ -5,12 +5,14 @@ import { BaseLayout } from "@/components/UI/layout";
 import { getAllCourses } from "@/content/courses/fetcher";
 export default function Home({ courses }) {
   return (
-    <BaseLayout>
-      <Hero />
-      <CourseList courses={courses}>
-        {(course) => <CourseCard key={course.id} course={course} />}
-      </CourseList>
-    </BaseLayout>
+    <div className="bg-gray-900">
+      <BaseLayout>
+        <Hero />
+        <CourseList courses={courses}>
+          {(course) => <CourseCard key={course.id} course={course} />}
+        </CourseList>
+      </BaseLayout>
+    </div>
   );
 }
 

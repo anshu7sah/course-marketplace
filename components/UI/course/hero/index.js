@@ -1,5 +1,12 @@
 import Image from "next/legacy/image";
-export default function CourseHero({ title, description, image, hasOwner }) {
+import { Button } from "../../common";
+export default function CourseHero({
+  title,
+  description,
+  image,
+  hasOwner,
+  onChange,
+}) {
   return (
     <section>
       <div className="relative bg-white overflow-hidden">
@@ -45,12 +52,12 @@ export default function CourseHero({ title, description, image, hasOwner }) {
                     </a>
                   </div>
                   <div className="mt-3 sm:mt-0 sm:ml-3">
-                    <a
-                      href="#"
+                    <Button
+                      onClick={onChange}
                       className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10"
                     >
                       Watch
-                    </a>
+                    </Button>
                   </div>
                 </div>
               </div>
