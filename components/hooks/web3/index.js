@@ -41,17 +41,8 @@ export const useAdmin = (redirectTo) => {
   const { account } = useAccount();
   const { requireInstall } = useWeb3();
   const router = useRouter();
-  console.log(redirectTo);
 
   useEffect(() => {
-    console.log("Require Install", requireInstall);
-    console.log(
-      "Initial Response and isAdmin",
-      account.hasInitialResponse,
-      !account.isAdmin
-    );
-    console.log("isEmpty", account.isEmpty);
-    console.log("End");
     if (
       requireInstall ||
       (account.hasInitialResponse && !account.isAdmin) ||
@@ -97,10 +88,13 @@ export const useManagedCourses = (...args) => {
 export const useWalletInfo = () => {
   const { account } = useAccount();
   const { network } = useNetwork();
+  const isConnecting =
+    !account.hasInitialResponse && !network.hasInitialResponse;
 
   return {
     account,
     network,
-    canPurchaseCourse: !!(account.data && network.isSupported),
+    isConnecting,
+    hasConnectedWallet: !!(account.data && network.isSupported),
   };
 };

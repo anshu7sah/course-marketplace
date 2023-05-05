@@ -11,6 +11,10 @@ import { setupHooks } from "./hooks/setupHooks";
 import { loadContract } from "@/utils/loadContract";
 export const Web3Context = createContext(null);
 
+const setListeners = (Provider) => {
+  provider.on("chainChanged", (_) => window.location.reload());
+};
+
 const createWeb3State = ({ web3, provider, contract, isLoading }) => {
   return {
     web3,

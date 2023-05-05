@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useSWR from "swr";
 
-export const handler = (web3, provider) => () => {
+export const handler = (web3) => () => {
   const NETWORKS = {
     1: "Ethereum Main Network",
     3: "Ropsten Test Network",
@@ -11,7 +11,7 @@ export const handler = (web3, provider) => () => {
     56: "Binance Smart Chain",
     1337: "Ganache",
   };
-  const { data, error, mutate, ...rest } = useSWR(
+  const { data, error, ...rest } = useSWR(
     () => (web3 ? "web3/network" : null),
     async () => {
       const chainId = await web3.eth.getChainId();
@@ -23,17 +23,8 @@ export const handler = (web3, provider) => () => {
   );
   const targetNetwork = NETWORKS[process.env.NEXT_PUBLIC_TARGET_CHAIN_ID];
 
-  useEffect(() => {
-    const mutator = (chainId) => mutate(NETWORKS[parseInt(chainId, 16)]);
-    provider?.on("chainChanged", mutator);
-
-    return () => {
-      provider?.removeListener("chainChanged", mutator);
-    };
-  }, [provider]);
   return {
     data,
-    mutate,
     target: targetNetwork,
     isSupported: targetNetwork === data,
     ...rest,

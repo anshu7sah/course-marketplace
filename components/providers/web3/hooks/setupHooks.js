@@ -12,7 +12,7 @@ const DEFAULT_HOOKS = {
 export const setupHooks = ({ web3, provider, contract }) => {
   return {
     useAccount: useAccountHooks(web3, provider),
-    useNetwork: useNetworkHooks(web3, provider),
+    useNetwork: useNetworkHooks(web3),
     useOwnedCourses: createOwnedCoursesHook(web3, contract),
     useOwnedCourse: createOwnedCourseHook(web3, contract),
     useManagedCourses: createManagedCoursesHook(web3, contract),

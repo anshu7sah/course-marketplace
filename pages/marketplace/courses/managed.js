@@ -41,7 +41,7 @@ const VerificationInput = ({ onVerify }) => {
 
 export default function ManagedCourses() {
   const [proofedOwnership, setProofedOwnership] = useState({});
-  const { web3 } = useWeb3();
+  const { web3, contract } = useWeb3();
   const { account } = useAdmin("/marketplace");
   const { managedCourses } = useManagedCourses(account);
 
@@ -63,6 +63,28 @@ export default function ManagedCourses() {
         });
   };
 
+  const changeCourseState = async (courseHash, method) => {
+    try {
+      await contract.methods[method](courseHash).send({
+        from: account.data,
+      });
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+
+  const activateCourse = async (courseHash) => {
+    changeCourseState(courseHash, "activateCourse");
+  };
+
+  const deactivateCourse = async (courseHash) => {
+    changeCourseState(courseHash, "deactivateCourse");
+  };
+
+  if (!account.isAdmin) {
+    return null;
+  }
+
   return (
     <BaseLayout>
       <MarketHeader />
@@ -80,12 +102,28 @@ export default function ManagedCourses() {
             />
             {proofedOwnership[course.hash] && (
               <div className="mt-2">
-                <Message>Verified!</Message>
+                <Message type="success">Verified!</Message>
               </div>
             )}
             {proofedOwnership[course.hash] === false && (
               <div className="mt-2">
                 <Message type="danger">Wrong Proof!</Message>
+              </div>
+            )}
+            {course.state === "purchased" && (
+              <div className="mt-2">
+                <Button
+                  onClick={() => activateCourse(course.hash)}
+                  variant="green"
+                >
+                  Activate
+                </Button>
+                <Button
+                  onClick={() => deactivateCourse(course.hash)}
+                  variant="red"
+                >
+                  Deactivate
+                </Button>
               </div>
             )}
           </ManagedCourseCard>

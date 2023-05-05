@@ -1,6 +1,6 @@
 const Item = ({ title, value }) => {
   return (
-    <div className="bg-gray-50 px-4 py-5  sm:px-6">
+    <div className="bg-gray-50 px-4 py-2  sm:px-6">
       <div className="text-sm font-medium text-gray-500">{title}</div>
       <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
         {value}

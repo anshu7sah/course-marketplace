@@ -1,26 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TYPES = {
-  success: "green",
-  warning: "yellow",
-  danger: "red",
+  success: "bg-green-600",
+  warning: "bg-yellow-500",
+  danger: "bg-red-500",
 };
 
-export default function Message({ children, type }) {
+const SIZES = {
+  sm: "text-sm",
+  md: "text-base",
+  lg: "text-lg",
+};
+
+export default function Message({ children, type, size = "md" }) {
   const [isDisplayed, setIsDisplayed] = useState(true);
 
   if (!isDisplayed) {
     return null;
   }
+  const messageeSizeClass = SIZES[size];
+  const [messageType, setMessageType] = useState("");
 
-  const messageType = TYPES[type];
+  useEffect(() => {
+    console.log(type);
+    setMessageType(TYPES[type]);
+  }, []);
 
   return (
-    <div className={`bg-${messageType}-100 rounded-xl mb-3`}>
-      <div className="max-w-7xl mx-auto py-3 px-3 sm:px-3 lg:px-3">
+    <div className={`${messageType} rounded-xl mb-3`}>
+      <div className="max-w-7xl mx-auto py-2 px-1 sm:px-3 lg:px-3">
         <div className="flex items-center justify-between flex-wrap">
           <div className="w-0 flex-1 flex items-center">
-            <div className={`ml-3 font-medium text-${messageType}-900`}>
+            <div className={`ml-3 ${messageeSizeClass}text-${messageType}`}>
               <span className="inline">{children}</span>
             </div>
           </div>
@@ -32,7 +43,7 @@ export default function Message({ children, type }) {
             >
               <span className="sr-only">Dismiss</span>
               <svg
-                className={`h-6 w-6 text-${messageType}-900`}
+                className={`h-6 w-6 text-${messageType}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
